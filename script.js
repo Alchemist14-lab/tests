@@ -16,38 +16,50 @@ const db = firebase.firestore();
 let tg = window.Telegram.WebApp;
 let userId = tg.initDataUnsafe?.user?.id || null;
 
+// ✅ Debugging Function (Shows Logs on Screen)
+function debugLog(message) {
+    let debugBox = document.getElementById("debug-box");
+    if (debugBox) {
+        debugBox.innerHTML += `<br>➜ ${message}`;
+    }
+}
+
 // ✅ Update Username in UI
 document.getElementById("username").innerText = tg.initDataUnsafe?.user?.first_name || "User";
+debugLog(`✅ Telegram WebApp Loaded`);
+debugLog(`User ID: ${userId}`);
 
 // ✅ Function to Fetch User Wallet Address
 async function fetchUserAddress() {
     const balanceText = document.getElementById("user-wallet");
 
     if (!userId) {
-        console.error("❌ User ID not found.");
+        debugLog("❌ User ID not found.");
         balanceText.innerText = "Error";
         return;
     }
 
     try {
         const userIdString = userId.toString();
+        debugLog(`Fetching wallet address for ${userIdString}...`);
+
         const docRef = db.collection("user_addresses").doc(userIdString);
         const docSnap = await docRef.get();
 
         if (!docSnap.exists) {
-            console.error("❌ Wallet address not found in Firestore.");
+            debugLog("❌ Wallet address not found in Firestore.");
             balanceText.innerText = "Not Linked";
             return;
         }
 
         const walletAddress = docSnap.data().address;
-        console.log("✅ User Wallet Address:", walletAddress);
+        debugLog(`✅ User Wallet Address: ${walletAddress}`);
 
         // 🔥 Update UI with Wallet Address
         balanceText.innerText = walletAddress;
 
     } catch (error) {
-        console.error("❌ Error fetching wallet address:", error);
+        debugLog(`❌ Error fetching wallet address: ${error.message}`);
         balanceText.innerText = "Error";
     }
 }
