@@ -18,7 +18,7 @@ body {
     display: flex;
     justify-content: space-between; /* Space between username and image */
     align-items: center;
-    background: #000000; /* Dark background */
+    background: #00000000; /* Dark background */
     padding: 10px 5px; /* Adjust padding for spacing */
     width: 90%; /* Responsive width */
     max-width: 500px; /* Ensures it doesn’t get too wide */
@@ -59,12 +59,13 @@ body {
 }
 
  
- .vector1 {
-    position: absolute;
-    width: 60vw;  /* Adjusts based on viewport width */
-    height: auto; /* Keeps aspect ratio */
-    left: 40vw;   /* Places it relative to screen width */
-    top: -5vh;    /* Moves it slightly above */
-    transform: rotate(0deg);
+.vector1 {
+    position: fixed; /* Keeps it in place */
+    width: 300px;  /* Fixed size */
+    height: auto;  /* Maintain aspect ratio */
+    left: 50%;  /* Center horizontally */
+    top: -50px;  /* Move slightly up */
+    transform: translateX(-50%) rotate(0deg); /* Center and prevent shifting */
+    z-index: -1; /* Send to background */
+    pointer-events: none; /* Prevents user interaction */
 }
-
