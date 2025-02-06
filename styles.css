@@ -1,27 +1,41 @@
 @import url('https://fonts.googleapis.com/css2?family=PT+Sans+Caption:wght@400;700&display=swap');
 
-/* General Styles */
 body {
-    background: #000; /* Black background */
-    color: #f5f5f5;
+    background: #000000; /* Pure black background */
+    color: #f5f5f5; /* Light text for contrast */
     font-family: 'PT Sans Caption', Arial, sans-serif;
     margin: 0;
     padding: 0;
- }
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh; /* Full height */
+}
+
  
  /* Header */
  .header {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Space between username and image */
     align-items: center;
-    background: #000000; /* Dark header background */
-    padding: 20px;
-    width: 357px;
-    height: 80px;
-    border: radius 0px;
-    margin: 16px;
- }
- 
+    background: #000000; /* Dark background */
+    padding: 10px 5px; /* Adjust padding for spacing */
+    width: 90%; /* Responsive width */
+    max-width: 500px; /* Ensures it doesn’t get too wide */
+    height: auto; /* Adjust height dynamically */
+    border-radius: 10px; /* Soft rounded edges */
+    margin: 14px auto; /* Centers the header */
+    box-sizing: border-box; /* Includes padding in width */
+}
+
+.profile-pic {
+    width: 50px; /* Adjust size */
+    height: 50px; /* Maintain aspect ratio */
+    border-radius: 50%; /* Makes it round */
+    object-fit: cover; /* Ensures image fits within the frame */
+}
+
+
  /* User Info */
  .user-info {
     display: flex;
@@ -29,25 +43,28 @@ body {
  }
  
  .username {
-    font-size: 21px;
-    font-weight: bold;
-    color: #1FB4FF; /* White */
-    margin: 0;
- }
+    font-size: 25px;  /* Adjust size */
+    font-weight: 600;  /* Thickness (Bold) */
+    color: #1FB4FF; /* Blue color */
+    margin-bottom: 0px;  /* Reduce space between username & welcome text */
+    letter-spacing: 0.5px; /* Adjust letter spacing */
+}
+
+.welcome-text {
+    font-size: 25px;  /* Slightly smaller */
+    font-weight: 600;  /* Medium thickness */
+    color: #ffffff;  /* White color */
+    margin-top: -5px;  /* Reduce space between username & welcome text */
+    letter-spacing: 0.5px; /* Adjust letter spacing */
+}
+
  
- .welcome-text {
-    font-size: 21px;
-    font-weight: bold;
-    color: #ffffff; /* Blue */
-    margin: 1px 0 0;
- }
- 
- /* Profile Picture */
- .profile-pic {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #1fb4ff00; /* White border */
- }
- 
+ .vector1 {
+    position: absolute;
+    width: 60vw;  /* Adjusts based on viewport width */
+    height: auto; /* Keeps aspect ratio */
+    left: 40vw;   /* Places it relative to screen width */
+    top: -5vh;    /* Moves it slightly above */
+    transform: rotate(0deg);
+}
+

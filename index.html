@@ -9,24 +9,28 @@
 </head>
 <body>
 
-   <!-- HEADER -->
-   <header class="header">
-      <div class="user-info">
-         <p class="username" id="username">User</p>
-         <p class="welcome-text">Welcome Back</p>
-      </div>
-      <img src="profile.png" alt="Profile Picture" id="profile-pic" class="profile-pic">
-   </header>
+    <!-- HEADER -->
+    <header class="header">
+       <div class="user-info">
+          <p class="username" id="username">User</p>
+          <p class="welcome-text">Welcome Back <span class="fire-emoji">🔥</span></p>
+       </div>
+       <img src="profile.png" alt="Profile Picture" id="profile-pic" class="profile-pic">
+    </header>
+ 
+    <script>
+       let tg = window.Telegram.WebApp; // Telegram WebApp object
+ 
+       // Get user details
+       let username = tg.initDataUnsafe?.user?.first_name || "User"; // Fallback if no username
+ 
+       // Set the username in the header
+       document.getElementById("username").innerText = username;
+    </script>
 
-   <script>
-      let tg = window.Telegram.WebApp; // Telegram WebApp object
+ <img src="vector1.png" class="vector1">
 
-      // Get user details
-      let username = tg.initDataUnsafe?.user?.first_name || "User"; // Fallback if no username
-
-      // Set the username in the header
-      document.getElementById("username").innerText = username;
-   </script>
-
-</body>
+ 
+ </body>
+ 
 </html>
