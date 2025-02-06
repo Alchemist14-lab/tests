@@ -5,6 +5,7 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Coin Flip App</title>
    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.6/lottie.min.js"></script>
    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -17,20 +18,35 @@
        </div>
        <img src="profile.png" alt="Profile Picture" id="profile-pic" class="profile-pic">
     </header>
- 
+
+    <!-- User Balance & Withdraw Button -->
+    <div class="balance-container">
+       <p class="user-balance">Balance: $1000</p>
+       <button class="withdraw-button">Withdraw</button>
+    </div>
+
+    <!-- Coin Flip Animation -->
+    <div id="coin-flip-container">
+       <div id="coin-animation"></div>
+    </div>
+
     <script>
        let tg = window.Telegram.WebApp; // Telegram WebApp object
- 
+
        // Get user details
        let username = tg.initDataUnsafe?.user?.first_name || "User"; // Fallback if no username
- 
-       // Set the username in the header
        document.getElementById("username").innerText = username;
+
+       // Load Coin Flip Animation
+       var animation = lottie.loadAnimation({
+          container: document.getElementById("coin-animation"), // Animation container
+          renderer: "svg", // Best performance
+          loop: true, // Repeat animation
+          autoplay: true, // Auto-play on load
+          path: "animation.json" // Ensure this file exists in your project directory
+       });
     </script>
 
- 
+</body>
 
- 
- </body>
- 
 </html>
