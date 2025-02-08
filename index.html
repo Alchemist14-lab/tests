@@ -6,6 +6,9 @@
    <title>Coin Flip App</title>
    <script src="https://telegram.org/js/telegram-web-app.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.6/lottie.min.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js"></script>
+   <script src="script.js" defer></script>
    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -18,7 +21,8 @@
              <img 
                 src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Travel%20and%20Places/Rocket.webp" 
                 alt="Rocket Emoji" 
-                width="30"  <!-- Increased size -->
+                width="30"
+             />
           </p>
        </div>
        <img src="profile.png" alt="Profile Picture" id="profile-pic" class="profile-pic">
@@ -26,7 +30,7 @@
 
     <!-- User Balance & Withdraw Button -->
     <div class="balance-container">
-       <p class="user-balance">Balance: ALGO 1000</p>
+       <p class="user-balance">Balance: ALGO <span id="algo-balance">Loading...</span></p>
        <button class="withdraw-button">Withdraw</button>
     </div>
 
@@ -55,55 +59,12 @@
              <img 
                 src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Money%20Bag.webp"  
                 alt="Money Bag Emoji" 
-                width="30"  <!-- Increased size -->
+                width="30"
+             />
           </div>
           <div class="bottom"></div>
        </button>
     </div>
 
-    <script>
-        let tg = window.Telegram.WebApp;
-    
-        // Get user details
-        let username = tg.initDataUnsafe?.user?.first_name || "User";
-        document.getElementById("username").innerText = username;
-    
-        // Load Coin Flip Animation
-        var animation = lottie.loadAnimation({
-           container: document.getElementById("coin-animation"),
-           renderer: "svg",
-           loop: true,
-           autoplay: true,
-           path: "animation.json"
-        });
-    
-        // Handle Heads & Tails Button Selection with Haptic Feedback
-        document.querySelectorAll(".coin-button").forEach(button => {
-            button.addEventListener("click", function() {
-                // Remove active state from all buttons
-                document.querySelectorAll(".coin-button").forEach(btn => {
-                    btn.classList.remove("active");
-                });
-    
-                // Add active state to clicked button
-                this.classList.add("active");
-    
-                // Apply LIGHT haptic feedback for heads/tails
-                Telegram.WebApp.HapticFeedback.impactOccurred('light');
-            });
-        });
-    
-        // Handle Withdraw Button with SOFT Haptic Feedback
-        document.querySelector(".withdraw-button").addEventListener("click", function() {
-            Telegram.WebApp.HapticFeedback.impactOccurred('soft');
-        });
-    
-        // Handle Spin Button with HEAVY Haptic Feedback
-        document.querySelector(".spin-button").addEventListener("click", function() {
-            Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
-        });
-    
-    </script>    
-     
 </body>
 </html>
