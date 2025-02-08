@@ -14,14 +14,19 @@
     <header class="header">
        <div class="user-info">
           <p class="username" id="username">User</p>
-          <p class="welcome-text">Welcome Back <span class="fire-emoji">🔥</span></p>
+          <p class="welcome-text">Welcome Back 
+             <img 
+                src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Travel%20and%20Places/Rocket.webp" 
+                alt="Rocket Emoji" 
+                width="30"  <!-- Increased size -->
+          </p>
        </div>
        <img src="profile.png" alt="Profile Picture" id="profile-pic" class="profile-pic">
     </header>
 
     <!-- User Balance & Withdraw Button -->
     <div class="balance-container">
-       <p class="user-balance">Balance: $1000</p>
+       <p class="user-balance">Balance: ALGO 1000</p>
        <button class="withdraw-button">Withdraw</button>
     </div>
 
@@ -30,23 +35,61 @@
        <div id="coin-animation"></div>
     </div>
 
+    <!-- Heads & Tails Selection -->
+    <div class="button-container">
+       <button class="coin-button" id="heads">
+          <div class="top">HEADS</div>
+          <div class="bottom"></div>
+       </button>
+       <button class="coin-button" id="tails">
+          <div class="top">TAILS</div>
+          <div class="bottom"></div>
+       </button>
+    </div>
+
+    <!-- Spin Button -->
+    <div class="spin-container">
+       <button class="spin-button">
+          <div class="top">
+             SPIN 
+             <img 
+                src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Money%20Bag.webp"  
+                alt="Money Bag Emoji" 
+                width="30"  <!-- Increased size -->
+          </div>
+          <div class="bottom"></div>
+       </button>
+    </div>
+
     <script>
-       let tg = window.Telegram.WebApp; // Telegram WebApp object
-
-       // Get user details
-       let username = tg.initDataUnsafe?.user?.first_name || "User"; // Fallback if no username
-       document.getElementById("username").innerText = username;
-
-       // Load Coin Flip Animation
-       var animation = lottie.loadAnimation({
-          container: document.getElementById("coin-animation"), // Animation container
-          renderer: "svg", // Best performance
-          loop: true, // Repeat animation
-          autoplay: true, // Auto-play on load
-          path: "animation.json" // Ensure this file exists in your project directory
-       });
-    </script>
-
+        let tg = window.Telegram.WebApp;
+     
+        // Get user details
+        let username = tg.initDataUnsafe?.user?.first_name || "User";
+        document.getElementById("username").innerText = username;
+     
+        // Load Coin Flip Animation
+        var animation = lottie.loadAnimation({
+           container: document.getElementById("coin-animation"),
+           renderer: "svg",
+           loop: true,
+           autoplay: true,
+           path: "animation.json"
+        });
+     
+        // Handle Heads & Tails Button Selection
+        document.querySelectorAll(".coin-button").forEach(button => {
+            button.addEventListener("click", function() {
+                // Remove active state from all buttons
+                document.querySelectorAll(".coin-button").forEach(btn => {
+                    btn.classList.remove("active");
+                });
+     
+                // Add active state to clicked button
+                this.classList.add("active");
+            });
+        });
+     </script>
+     
 </body>
-
 </html>
