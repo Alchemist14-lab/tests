@@ -63,11 +63,11 @@
 
     <script>
         let tg = window.Telegram.WebApp;
-     
+    
         // Get user details
         let username = tg.initDataUnsafe?.user?.first_name || "User";
         document.getElementById("username").innerText = username;
-     
+    
         // Load Coin Flip Animation
         var animation = lottie.loadAnimation({
            container: document.getElementById("coin-animation"),
@@ -76,20 +76,34 @@
            autoplay: true,
            path: "animation.json"
         });
-     
-        // Handle Heads & Tails Button Selection
+    
+        // Handle Heads & Tails Button Selection with Haptic Feedback
         document.querySelectorAll(".coin-button").forEach(button => {
             button.addEventListener("click", function() {
                 // Remove active state from all buttons
                 document.querySelectorAll(".coin-button").forEach(btn => {
                     btn.classList.remove("active");
                 });
-     
+    
                 // Add active state to clicked button
                 this.classList.add("active");
+    
+                // Apply LIGHT haptic feedback for heads/tails
+                Telegram.WebApp.HapticFeedback.impactOccurred('light');
             });
         });
-     </script>
+    
+        // Handle Withdraw Button with SOFT Haptic Feedback
+        document.querySelector(".withdraw-button").addEventListener("click", function() {
+            Telegram.WebApp.HapticFeedback.impactOccurred('soft');
+        });
+    
+        // Handle Spin Button with HEAVY Haptic Feedback
+        document.querySelector(".spin-button").addEventListener("click", function() {
+            Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+        });
+    
+    </script>    
      
 </body>
 </html>
