@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Test</title>
+
+    <!-- ✅ Correct Firebase Imports -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 15px;
+            background: #1e1e1e;
+            border-radius: 8px;
+            display: inline-block;
+            min-width: 300px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Firebase User Address Fetch Test</h2>
+    <p>Fetching user address...</p>
+
+    <!-- ✅ Output Box -->
+    <div class="output" id="output">Loading...</div>
+
+    <script>
+        // ✅ Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBi5bXxOygi0xsx22A6HCz2BW1e6vhFMgA",
+            authDomain: "test-algo-public.firebaseapp.com",
+            projectId: "test-algo-public",
+            storageBucket: "test-algo-public.appspot.com",
+            messagingSenderId: "510975939116",
+            appId: "1:510975939116:web:4d51fd30f0d0da025df789"
+        };
+
+        // ✅ Initialize Firebase & Firestore
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // ✅ Function to Fetch User Address from Firestore
+        async function fetchUserAddress(userId) {
+            const outputDiv = document.getElementById("output");
+            try {
+                outputDiv.innerHTML = "Fetching data...";
+
+                const docRef = db.collection("user_addresses").doc(userId.toString());
+                const docSnap = await docRef.get();
+
+                if (docSnap.exists) {
+                    const userData = docSnap.data();
+                    outputDiv.innerHTML = `
+                        <strong>User Found!</strong><br>
+                        <b>Username:</b> ${userData.username}<br>
+                        <b>User ID:</b> ${userData.user_id}<br>
+                        <b>Wallet Address:</b> ${userData.address}
+                    `;
+                } else {
+                    outputDiv.innerHTML = "<strong style='color:red;'>❌ No user found.</strong>";
+                }
+            } catch (error) {
+                outputDiv.innerHTML = `<strong style='color:red;'>❌ Error:</strong> ${error.message}`;
+            }
+        }
+
+        // ✅ Run Test for userId = 7610933618
+        fetchUserAddress(7610933618);
+    </script>
+
+</body>
+</html>

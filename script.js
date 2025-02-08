@@ -1,8 +1,4 @@
-// ✅ Load Firebase SDK
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-// ✅ Firebase Configuration
+// ✅ Import Firebase SDK
 const firebaseConfig = {
     apiKey: "AIzaSyBi5bXxOygi0xsx22A6HCz2BW1e6vhFMgA",
     authDomain: "test-algo-public.firebaseapp.com",
@@ -12,15 +8,13 @@ const firebaseConfig = {
     appId: "1:510975939116:web:4d51fd30f0d0da025df789"
 };
 
-// ✅ Initialize Firebase & Firestore
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+// ✅ Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
 // ✅ Initialize Telegram WebApp
 let tg = window.Telegram.WebApp;
 let userId = tg.initDataUnsafe?.user?.id || null;
-
-// ✅ Update Username in UI
 document.getElementById("username").innerText = tg.initDataUnsafe?.user?.first_name || "User";
 
 // ✅ Load Coin Flip Animation
@@ -32,7 +26,7 @@ var animation = lottie.loadAnimation({
     path: "animation.json"
 });
 
-// ✅ Fetch User's ALGO Balance
+// ✅ Function: Fetch User's ALGO Balance
 async function fetchBalance() {
     if (!userId) {
         console.error("❌ User ID not found.");
@@ -41,19 +35,16 @@ async function fetchBalance() {
     }
 
     try {
-        const userIdString = userId.toString();
-
         // 🔥 Fetch wallet address from Firestore
-        const docRef = doc(db, "user_addresses", userIdString);
-        const docSnap = await getDoc(docRef);
+        const userDoc = await db.collection("user_addresses").doc(userId.toString()).get();
 
-        if (!docSnap.exists()) {
+        if (!userDoc.exists) {
             console.error("❌ Wallet address not found in Firestore.");
             document.getElementById("algo-balance").innerText = "N/A";
             return;
         }
 
-        const walletAddress = docSnap.data().address; // Adjusted to match Firestore key
+        const walletAddress = userDoc.data().address;
         console.log("✅ User Wallet Address:", walletAddress);
 
         // 🔥 Fetch ALGO balance from Algorand API
@@ -66,7 +57,7 @@ async function fetchBalance() {
         }
 
         console.log("✅ User Balance:", balance);
-        document.getElementById("algo-balance").innerText = balance.toFixed(2); // Show balance with 2 decimal places
+        document.getElementById("algo-balance").innerText = balance.toFixed(2);
 
     } catch (error) {
         console.error("❌ Error fetching balance:", error);
