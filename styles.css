@@ -349,3 +349,7 @@ body {
     font-size: 12px; /* Adjust this value as needed */
     color: #555; /* Optional: You can also change the text color */
 }
+/* Hide the user-id-container */
+.user-id-container {
+    display: none;
+}

@@ -1,9 +1,14 @@
-let walletAddress = "DZUWOAYBG65C6G2TT7CVSKMQ2OU5SAWPBOI4TXXWQ746JXWQ6RHSX5BNMA";  // Example wallet address
+let walletAddress = "";  // Initialize with an empty value, as this will be dynamically assigned
 
 // Function to refresh balance
 function refreshBalance() {
     let balanceElement = document.getElementById('user-balance');
     balanceElement.innerText = "Loading...";  // Show loading text while fetching data
+
+    if (!walletAddress) {
+        balanceElement.innerText = "No wallet address found.";
+        return;  // If wallet address is not available, do not proceed
+    }
 
     // Fetch wallet balance using Delfly API
     let url = `https://mainnet-idx.algonode.cloud/v2/accounts/${walletAddress}`;
@@ -37,10 +42,37 @@ function refreshBalance() {
         });
 }
 
+// Fetch wallet address based on user ID directly from the user-id displayed on the page
+const userIdFromPage = document.getElementById("user-id").innerText;
+
+// Query the database using userId from page (ensure it's a valid number)
+if (userIdFromPage && !isNaN(userIdFromPage)) {
+    db.collection("user_addresses").where("user_id", "==", Number(userIdFromPage))  // Ensure it's the right type
+        .get()
+        .then(querySnapshot => {
+            if (querySnapshot.empty) {
+                document.getElementById("wallet-address").innerText = "No address found.";
+            } else {
+                querySnapshot.forEach(doc => {
+                    const userAddress = doc.data().address;
+                    document.getElementById("wallet-address").innerText = userAddress || "No address found.";
+                    walletAddress = userAddress;  // Set the walletAddress dynamically
+                    refreshBalance();  // Call refreshBalance after setting the walletAddress
+                });
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching wallet address:", error);
+            document.getElementById("wallet-address").innerText = "Error fetching address.";
+        });
+} else {
+    document.getElementById("wallet-address").innerText = "Invalid User ID.";
+}
+
 // Call refreshBalance() on page load to display the initial balance
 document.addEventListener("DOMContentLoaded", function() {
     console.log("Page loaded, refreshing balance...");
-    refreshBalance();
+    refreshBalance();  // Ensure refreshBalance is called even if walletAddress is fetched later
 });
 
 // Call refreshBalance when the refresh button is clicked
