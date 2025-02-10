@@ -6,6 +6,8 @@
    <title>Coin Flip App</title>
    <script src="https://telegram.org/js/telegram-web-app.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.6/lottie.min.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -73,10 +75,10 @@
        </button>
     </div>
 
-    <!-- Display User ID Section -->
+    <!-- Display User ID and Wallet Address -->
     <div class="user-id-container">
         <p><strong>User ID:</strong> <span id="user-id">Loading...</span></p>
-        <p id="wallet-address">Loading Wallet Address...</p>
+        <p><strong>Wallet Address:</strong> <span id="wallet-address">Fetching wallet address...</span></p> <!-- New address display -->
     </div>
 
     <script src="script.js" defer></script>
@@ -85,7 +87,8 @@
     
         // Get user details
         let username = tg.initDataUnsafe?.user?.first_name || "User";
-        let userId = tg.initDataUnsafe?.user?.id || null;
+        let userId = "7610933618"; // This should be dynamically fetched from Telegram
+
         
         // Display username
         document.getElementById("username").innerText = username;
@@ -97,13 +100,47 @@
             document.getElementById("user-id").innerText = "Not available";
         }
 
+        // Initialize Firebase and Firestore
+        const firebaseConfig = {
+            apiKey: "AIzaSyBi5bXxOygi0xsx22A6HCz2BW1e6vhFMgA",
+            authDomain: "test-algo-public.firebaseapp.com",
+            projectId: "test-algo-public",
+            storageBucket: "test-algo-public.appspot.com",
+            messagingSenderId: "510975939116",
+            appId: "1:510975939116:web:4d51fd30f0d0da025df789"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Fetch wallet address based on user ID
+        if (userId) {
+            db.collection("user_addresses").where("user_id", "==", Number(userId))  // Ensure it's the right type
+                .get()
+                .then(querySnapshot => {
+                    if (querySnapshot.empty) {
+                        document.getElementById("wallet-address").innerText = "No address found.";
+                    } else {
+                        querySnapshot.forEach(doc => {
+                            const userAddress = doc.data().address;
+                            document.getElementById("wallet-address").innerText = userAddress || "No address found.";
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching wallet address:", error);
+                    document.getElementById("wallet-address").innerText = "Error fetching address.";
+                });
+        }
+
         // Load Coin Flip Animation
         var animation = lottie.loadAnimation({
-           container: document.getElementById("coin-animation"),
-           renderer: "svg",
-           loop: true,
-           autoplay: true,
-           path: "animation.json"
+            container: document.getElementById("coin-animation"),
+            renderer: "svg",
+            loop: true,
+            autoplay: true,
+            path: "animation.json"
         });
     
         // Handle Heads & Tails Button Selection with Haptic Feedback
@@ -131,10 +168,9 @@
         document.querySelector(".spin-button").addEventListener("click", function() {
             Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
         });
+    </script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
     
-    </script>    
-     <!-- Link to the addressfetch.js -->
-    <script src="addressfetch.js" defer></script>
-    <script src="script.js" defer></script>
 </body>
 </html>
