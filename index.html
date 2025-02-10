@@ -141,7 +141,7 @@
         });
     
         // Fetch wallet address from Firestore database using userId
-        function getWalletAddress(userId) {
+        async function getWalletAddress(userId) {
             if (!userId) {
                 console.error("User ID not found");
                 return;
@@ -151,7 +151,8 @@
             const usersRef = db.collection("users");  // Assuming users collection
             const userDocRef = usersRef.doc(userId.toString());  // Query by user ID
 
-            userDocRef.get().then(doc => {
+            try {
+                const doc = await userDocRef.get();
                 if (doc.exists) {
                     const userData = doc.data();
                     const walletAddress = userData.walletAddress;  // Assuming walletAddress field in Firestore
@@ -161,17 +162,16 @@
                     console.log(`No user data found for user ID: ${userId}`);
                     document.getElementById('wallet-address').innerText = "No address found";  // Show message if no data found
                 }
-            }).catch(error => {
+            } catch (error) {
                 console.error("Error fetching user data from Firestore: ", error);
                 document.getElementById('wallet-address').innerText = "Error fetching address";  // Show error message
-            });
+            }
         }
 
         // Call the function to get the wallet address using the user ID
         if (userId) {
             getWalletAddress(userId);
         }
-
     </script>    
 </body>
 </html>
