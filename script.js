@@ -34,12 +34,12 @@ function refreshBalance(walletAddress) {
                 balanceElement.innerText = `Balance: ${balance.toFixed(4)} ALGO`; // Update balance with 4 decimal precision
             } else {
                 console.error("No 'account' data in API response.");
-                balanceElement.innerText = "Error fetching balance"; // Error handling
+                balanceElement.innerText = "NO WALLET LINKED"; // Error handling
             }
         })
         .catch(error => {
-            console.error("Error fetching balance:", error);
-            balanceElement.innerText = "Error fetching balance"; // Show error message if something goes wrong
+            console.error("0 ALGO:", error);
+            balanceElement.innerText = "0 ALGO"; // Show error message if something goes wrong
         });
 }
 
