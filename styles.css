@@ -345,3 +345,7 @@ body {
     background: #ffffff; /* Change tiny line color when pressed */
     bottom: 0px; /* Move tiny lines down when pressed */
 }
+#wallet-address {
+    font-size: 12px; /* Adjust this value as needed */
+    color: #555; /* Optional: You can also change the text color */
+}
