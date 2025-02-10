@@ -87,7 +87,8 @@
     
         // Get user details
         let username = tg.initDataUnsafe?.user?.first_name || "User";
-        let userId = "7610933618"; // This should be dynamically fetched from Telegram
+        let userId = tg.initDataUnsafe?.user?.id || null;
+
 
         // Display username
         document.getElementById("username").innerText = username;
@@ -115,7 +116,7 @@
 
         // Fetch wallet address based on user ID
         if (userId) {
-            db.collection("user_addresses").where("user_id", "==", Number(userId))  // Ensure it's the right type
+            db.collection("user_addresses").where("user-id", "==", Number(userId))  // Ensure it's the right type
                 .get()
                 .then(querySnapshot => {
                     if (querySnapshot.empty) {
