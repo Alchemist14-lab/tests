@@ -6,8 +6,6 @@
    <title>Coin Flip App</title>
    <script src="https://telegram.org/js/telegram-web-app.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.6/lottie.min.js"></script>
-   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
-   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js"></script>
    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -75,36 +73,29 @@
        </button>
     </div>
 
-    <!-- Display Wallet Address Section -->
-    <div id="wallet-address-container">
-        <p><strong>Wallet Address:</strong> <span id="wallet-address">Loading...</span></p>
+    <!-- Display User ID Section -->
+    <div class="user-id-container">
+        <p><strong>User ID:</strong> <span id="user-id">Loading...</span></p>
     </div>
 
     <script src="script.js" defer></script>
     <script>
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyBi5bXxOygi0xsx22A6HCz2BW1e6vhFMgA",
-            authDomain: "test-algo-public.firebaseapp.com",
-            projectId: "test-algo-public",
-            storageBucket: "test-algo-public.appspot.com",
-            messagingSenderId: "510975939116",
-            appId: "1:510975939116:web:4d51fd30f0d0da025df789"
-        };
-
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore(app);
-
         let tg = window.Telegram.WebApp;
     
         // Get user details
         let username = tg.initDataUnsafe?.user?.first_name || "User";
-        let userId = tg.initDataUnsafe?.user?.id || null;  // Get user ID from the Telegram Web App
-        console.log("User ID:", userId);  // Log user ID to the console
-    
+        let userId = tg.initDataUnsafe?.user?.id || null;
+        
+        // Display username
         document.getElementById("username").innerText = username;
-    
+
+        // Display user ID
+        if (userId) {
+            document.getElementById("user-id").innerText = userId;
+        } else {
+            document.getElementById("user-id").innerText = "Not available";
+        }
+
         // Load Coin Flip Animation
         var animation = lottie.loadAnimation({
            container: document.getElementById("coin-animation"),
@@ -140,38 +131,7 @@
             Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
         });
     
-        // Fetch wallet address from Firestore database using userId
-        async function getWalletAddress(userId) {
-            if (!userId) {
-                console.error("User ID not found");
-                return;
-            }
-
-            // Reference to Firestore collection
-            const usersRef = db.collection("users");  // Assuming users collection
-            const userDocRef = usersRef.doc(userId.toString());  // Query by user ID
-
-            try {
-                const doc = await userDocRef.get();
-                if (doc.exists) {
-                    const userData = doc.data();
-                    const walletAddress = userData.walletAddress;  // Assuming walletAddress field in Firestore
-                    console.log(`Wallet Address for user ${userId}: ${walletAddress}`);
-                    document.getElementById('wallet-address').innerText = walletAddress;  // Display wallet address
-                } else {
-                    console.log(`No user data found for user ID: ${userId}`);
-                    document.getElementById('wallet-address').innerText = "No address found";  // Show message if no data found
-                }
-            } catch (error) {
-                console.error("Error fetching user data from Firestore: ", error);
-                document.getElementById('wallet-address').innerText = "Error fetching address";  // Show error message
-            }
-        }
-
-        // Call the function to get the wallet address using the user ID
-        if (userId) {
-            getWalletAddress(userId);
-        }
     </script>    
+     
 </body>
 </html>
