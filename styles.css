@@ -345,11 +345,21 @@ body {
     background: #ffffff; /* Change tiny line color when pressed */
     bottom: 0px; /* Move tiny lines down when pressed */
 }
-#wallet-address {
-    font-size: 12px; /* Adjust this value as needed */
-    color: #555; /* Optional: You can also change the text color */
+
+/* Add styles for the User ID and Wallet Address sections */
+.user-id-container p {
+    font-size: 8px; /* Adjusted font size for the labels */
+    color: #333;
 }
-/* Hide the user-id-container */
-.user-id-container {
-    display: none;
+
+#user-id {
+    font-size: 8px; /* Increased font size for User ID value */
+    font-weight: bold;
+    color: #0066cc; /* Style for better visibility */
+}
+
+#wallet-address {
+    font-size: 8px; /* Smaller font size for Wallet Address */
+    font-weight: normal;
+    color: #333;
 }
