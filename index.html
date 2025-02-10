@@ -89,16 +89,11 @@
         let username = tg.initDataUnsafe?.user?.first_name || "User";
         let userId = tg.initDataUnsafe?.user?.id || null;
 
-
         // Display username
         document.getElementById("username").innerText = username;
 
         // Display user ID
-        if (userId) {
-            document.getElementById("user-id").innerText = userId;
-        } else {
-            document.getElementById("user-id").innerText = "Not available";
-        }
+        document.getElementById("user-id").innerText = userId || "Not available";
 
         // Initialize Firebase and Firestore
         const firebaseConfig = {
@@ -114,9 +109,12 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // Fetch wallet address based on user ID
-        if (userId) {
-            db.collection("user_addresses").where("user-id", "==", Number(userId))  // Ensure it's the right type
+        // Fetch wallet address based on user ID directly from the user-id displayed on the page
+        const userIdFromPage = document.getElementById("user-id").innerText;
+        
+        // Query the database using userId from page (ensure it's a valid number)
+        if (userIdFromPage && !isNaN(userIdFromPage)) {
+            db.collection("user_addresses").where("user_id", "==", Number(userIdFromPage))  // Ensure it's the right type
                 .get()
                 .then(querySnapshot => {
                     if (querySnapshot.empty) {
@@ -132,6 +130,8 @@
                     console.error("Error fetching wallet address:", error);
                     document.getElementById("wallet-address").innerText = "Error fetching address.";
                 });
+        } else {
+            document.getElementById("wallet-address").innerText = "Invalid User ID.";
         }
 
         // Load Coin Flip Animation
