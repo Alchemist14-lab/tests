@@ -1,21 +1,20 @@
-// Function to refresh balance
-function refreshBalance() {
+let walletAddress = "DZUWOAYBG65C6G2TT7CVSKMQ2OU5SAWPBOI4TXXWQ746JXWQ6RHSX5BNMA";  // Example wallet address
+
+// Function to refresh balance, now accepts walletAddress as a parameter
+function refreshBalance(walletAddress) {
     let balanceElement = document.getElementById('user-balance');
     balanceElement.innerText = "Loading...";  // Show loading text while fetching data
 
-    // Get the wallet address from the "wallet-address" element in index.html
-    let walletAddress = document.getElementById('wallet-address').innerText.trim();
-
-    if (walletAddress === "" || walletAddress === "No address found." || walletAddress === "Error fetching address.") {
-        balanceElement.innerText = "Invalid or missing wallet address.";
-        console.error("Invalid wallet address.");
+    if (!walletAddress) {
+        console.error("No wallet address provided.");
+        balanceElement.innerText = "Error: No wallet address.";
         return;
     }
 
     // Fetch wallet balance using Delfly API
     let url = `https://mainnet-idx.algonode.cloud/v2/accounts/${walletAddress}`;
 
-    console.log("Sending request to fetch balance...");
+    console.log("Sending request to fetch balance for address:", walletAddress);
 
     // Use fetch to get the response from the API
     fetch(url)
@@ -44,14 +43,7 @@ function refreshBalance() {
         });
 }
 
-// Call refreshBalance() on page load to display the initial balance
+// Call refreshBalance() on page load to display the initial balance, with an empty walletAddress
 document.addEventListener("DOMContentLoaded", function() {
-    console.log("Page loaded, refreshing balance...");
-    refreshBalance();
-});
-
-// Call refreshBalance when the refresh button is clicked
-document.querySelector('.withdraw-button').addEventListener("click", function() {
-    console.log("Refresh button clicked, refreshing balance...");
-    refreshBalance();
+    console.log("Page loaded, waiting for wallet address...");
 });
