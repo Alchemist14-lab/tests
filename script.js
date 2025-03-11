@@ -122,3 +122,31 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+// Add event listener for the spin button
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("spinButton").addEventListener("click", function () {
+        const betAmount = document.getElementById("bet-amount").value.trim(); // Get bet amount
+        const headsSelected = document.getElementById("headsButton").classList.contains("active");
+        const tailsSelected = document.getElementById("tailsButton").classList.contains("active");
+
+        // If bet amount is empty OR neither Heads nor Tails is selected, show the popup
+        if (!betAmount || (!headsSelected && !tailsSelected)) {
+            showPopup();
+        }
+        // If both conditions are met, do nothing (No popup and no further action)
+    });
+
+    function showPopup() {
+        Telegram.WebApp.showPopup({
+            title: 'Invalid Bet',
+            message: 'Please enter a bet amount and select Heads or Tails before spinning.',
+            buttons: [
+                { id: 'ok', type: 'default', text: 'OK' }
+            ]
+        }, function (buttonId) {
+            if (buttonId === 'ok') {
+                console.log("User acknowledged the popup.");
+            }
+        });
+    }
+});
