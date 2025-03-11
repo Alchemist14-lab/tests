@@ -116,12 +116,7 @@
         let username = tg.initDataUnsafe?.user?.first_name || "User";
         let userId = tg.initDataUnsafe?.user?.id || null;
 
-        // Display username
-        document.getElementById("username").innerText = username;
-
-        // Display user ID
-        document.getElementById("user-id").innerText = userId || "Not available";
-
+        
         // Initialize Firebase and Firestore
         const firebaseConfig = {
             apiKey: "AIzaSyBi5bXxOygi0xsx22A6HCz2BW1e6vhFMgA",
