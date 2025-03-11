@@ -49,16 +49,7 @@
        <div id="coin-animation"></div>
     </div>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bet Amount</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
+<!-- Bet Amount -->
     <div class="bet-amount-container">
         <input type="text" id="bet-amount" list="BetSize" placeholder="Enter or Select Amount">
         <datalist id="BetSize">
@@ -68,13 +59,6 @@
             <option value="100"></option>
         </datalist>
     </div>
-
-    <script src="script.js"></script>
-</body>
-</html>
-
-
-    
 
     <!-- Heads & Tails Selection -->
     <div class="button-container">
@@ -199,7 +183,28 @@
         // Handle Spin Button with HEAVY Haptic Feedback
         document.querySelector(".spin-button").addEventListener("click", function() {
             Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+            showPopup();  // Show the popup
         });
+
+        // Function to show the popup
+        function showPopup() {
+            Telegram.WebApp.showPopup({
+                title: 'Popup title',
+                message: 'Popup message',
+                buttons: [
+                    {id: 'delete', type: 'destructive', text: 'Delete all'},
+                    {id: 'faq', type: 'default', text: 'Open FAQ'},
+                    {type: 'cancel'},
+                ]
+            }, function (buttonId) {
+                if (buttonId === 'delete') {
+                    alert("'Delete all' selected");
+                } else if (buttonId === 'faq') {
+                    Telegram.WebApp.openLink('https://telegram.org/faq');
+                }
+            });
+        }
+
     </script>
     <script type="module" src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
