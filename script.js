@@ -124,6 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Function to show the popup
 function showPopup() {
+    console.log("Popup function triggered"); // Debugging line
     Telegram.WebApp.showPopup({
         title  : 'Popup title',
         message: 'Please enter a bet amount before spinning.',
@@ -133,6 +134,7 @@ function showPopup() {
             {type: 'cancel'},
         ]
     }, function (buttonId) {
+        console.log("Popup button clicked:", buttonId); // Debugging line
         if (buttonId === 'delete') {
             DemoApp.showAlert("'Delete all' selected");
         } else if (buttonId === 'faq') {
@@ -141,17 +143,19 @@ function showPopup() {
     });
 }
 
-// Handle Spin Button with HEAVY Haptic Feedback and Bet Amount Check
+// Handle Spin Button with Bet Amount Check
 document.querySelector(".spin-button").addEventListener("click", function() {
-    // Check if the bet amount is empty
+    // Get the value of the bet amount field
     let betAmount = document.getElementById("bet-amount").value;
-    
+
+    console.log("Bet amount entered:", betAmount); // Debugging line
+
     // If bet amount is empty, show the popup
     if (!betAmount) {
         showPopup();
     } else {
-        // If bet amount is provided, proceed with the spinning process
+        console.log("Proceeding with the spin action..."); // Debugging line
+        // Insert logic here for the spinning process if needed.
         Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
-        // Insert logic here for the spinning process, if any
     }
 });
