@@ -91,9 +91,22 @@ document.querySelector('.withdraw-button').addEventListener("click", function ()
 
     if (!walletAddress || walletAddress === "Fetching wallet address..." || walletAddress === "No address found.") {
         console.error("Invalid wallet address. Cannot refresh balance.");
-        document.getElementById('user-balance').innerText = "Invalid wallet address.";
+        document.getElementById('user-balance').innerText = "no wallet address linked.";
         return;
     }
 
     refreshBalance(walletAddress);
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const betAmountInput = document.getElementById("bet-amount");
+
+    // Check for input changes and toggle the glow effect
+    betAmountInput.addEventListener("input", function () {
+        if (betAmountInput.value.trim() !== "") {
+            betAmountInput.classList.add("no-glow"); // Stop glowing
+        } else {
+            betAmountInput.classList.remove("no-glow"); // Start glowing again
+        }
+    });
 });
