@@ -103,10 +103,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Check for input changes and toggle the glow effect
     betAmountInput.addEventListener("input", function () {
+        // Remove non-numeric characters
+        betAmountInput.value = betAmountInput.value.replace(/[^0-9]/g, '');
+
+        // Stop glowing when there is a value
         if (betAmountInput.value.trim() !== "") {
             betAmountInput.classList.add("no-glow"); // Stop glowing
         } else {
             betAmountInput.classList.remove("no-glow"); // Start glowing again
         }
     });
+
+    // Close keyboard when tapping outside the input box (mobile devices)
+    document.addEventListener("click", function(event) {
+        if (!betAmountInput.contains(event.target)) {
+            betAmountInput.blur(); // Close the keyboard
+        }
+    });
 });
+
