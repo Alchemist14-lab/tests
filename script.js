@@ -88,42 +88,69 @@ document.addEventListener("DOMContentLoaded", function () {
 document.querySelector('.withdraw-button').addEventListener("click", function () {
     let walletAddress = getWalletAddress(); // Get wallet address from the page
     console.log("Refresh button clicked. Wallet Address:", walletAddress);
-
-    if (!walletAddress || walletAddress === "Fetching wallet address..." || walletAddress === "No address found.") {
-        console.error("Invalid wallet address. Cannot refresh balance.");
-        document.getElementById('user-balance').innerText = "no wallet address linked.";
-        return;
-    }
-
-    refreshBalance(walletAddress);
+    refreshBalance(walletAddress); // Refresh balance on click
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-    const betAmountInput = document.getElementById("bet-amount");
+// Handle Heads & Tails Button Selection with Haptic Feedback
+document.querySelectorAll(".coin-button").forEach(button => {
+    button.addEventListener("click", function () {
+        // Remove active state from all buttons
+        document.querySelectorAll(".coin-button").forEach(btn => {
+            btn.classList.remove("active");
+        });
 
-    // Check for input changes and toggle the glow effect
-    betAmountInput.addEventListener("input", function () {
-        // Remove non-numeric characters
-        betAmountInput.value = betAmountInput.value.replace(/[^0-9]/g, '');
+        // Add active state to clicked button
+        this.classList.add("active");
 
-        // Stop glowing when there is a value
-        if (betAmountInput.value.trim() !== "") {
-            betAmountInput.classList.add("no-glow"); // Stop glowing
-        } else {
-            betAmountInput.classList.remove("no-glow"); // Start glowing again
-        }
-    });
-
-    // Close keyboard when tapping outside the input box (mobile devices)
-    document.addEventListener("click", function(event) {
-        if (!betAmountInput.contains(event.target)) {
-            betAmountInput.blur(); // Close the keyboard
-        }
+        // Apply LIGHT haptic feedback for heads/tails
+        Telegram.WebApp.HapticFeedback.impactOccurred('light');
     });
 });
 
-// Handle Spin Button with HEAVY Haptic Feedback and Show Popup
-document.querySelector(".spin-button").addEventListener("click", function() {
-    Telegram.WebApp.HapticFeedback.impactOccurred('heavy');  // Haptic feedback
+// Handle Withdraw Button with SOFT Haptic Feedback
+document.querySelector(".withdraw-button").addEventListener("click", function () {
+    Telegram.WebApp.HapticFeedback.impactOccurred('soft');
+});
+
+// Handle Spin Button with HEAVY Haptic Feedback
+document.querySelector(".spin-button").addEventListener("click", function () {
+    Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
     showPopup();  // Show the popup
 });
+
+document.querySelector(".spin-button").addEventListener("click", function () {
+    // Check if the bet amount is filled and if either Heads or Tails is selected
+    let betAmount = document.getElementById("bet-amount").value;
+    let selectedOption = document.querySelector(".coin-button.active");
+
+    // If either bet amount is empty or no selection is made for heads/tails, show the popup
+    if (!betAmount || !selectedOption) {
+        showPopup();  // Show the popup
+    } else {
+        // If everything is filled, proceed without showing the popup
+        Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+        // Add logic for spinning the coin here, if any
+    }
+});
+
+// Function to show the popup
+function showPopup() {
+    Telegram.WebApp.showPopup({
+        title: 'Please Review 🚫',
+        message: 'Please fill in the bet amount and select either Heads or Tails before proceeding.',
+        buttons: [
+            {type: 'cancel'},
+        ]
+    }, function (buttonId) {
+        if (buttonId === 'delete') {
+            alert("'Delete all' selected");
+        } else if (buttonId === 'faq') {
+            Telegram.WebApp.openLink('https://telegram.org/faq');
+        }
+    });
+}
+
+// Function to get the user's wallet address dynamically
+function getWalletAddress() {
+    return document.getElementById("wallet-address").innerText.trim();
+}
