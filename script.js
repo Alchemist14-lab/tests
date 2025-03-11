@@ -122,31 +122,36 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-// Add event listener for the spin button
-document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("spinButton").addEventListener("click", function () {
-        const betAmount = document.getElementById("bet-amount").value.trim(); // Get bet amount
-        const headsSelected = document.getElementById("headsButton").classList.contains("active");
-        const tailsSelected = document.getElementById("tailsButton").classList.contains("active");
-
-        // If bet amount is empty OR neither Heads nor Tails is selected, show the popup
-        if (!betAmount || (!headsSelected && !tailsSelected)) {
-            showPopup();
+// Function to show the popup
+function showPopup() {
+    Telegram.WebApp.showPopup({
+        title  : 'Popup title',
+        message: 'Please enter a bet amount before spinning.',
+        buttons: [
+            {id: 'delete', type: 'destructive', text: 'Delete all'},
+            {id: 'faq', type: 'default', text: 'Open FAQ'},
+            {type: 'cancel'},
+        ]
+    }, function (buttonId) {
+        if (buttonId === 'delete') {
+            DemoApp.showAlert("'Delete all' selected");
+        } else if (buttonId === 'faq') {
+            Telegram.WebApp.openLink('https://telegram.org/faq');
         }
-        // If both conditions are met, do nothing (No popup and no further action)
     });
+}
 
-    function showPopup() {
-        Telegram.WebApp.showPopup({
-            title: 'Invalid Bet',
-            message: 'Please enter a bet amount and select Heads or Tails before spinning.',
-            buttons: [
-                { id: 'ok', type: 'default', text: 'OK' }
-            ]
-        }, function (buttonId) {
-            if (buttonId === 'ok') {
-                console.log("User acknowledged the popup.");
-            }
-        });
+// Handle Spin Button with HEAVY Haptic Feedback and Bet Amount Check
+document.querySelector(".spin-button").addEventListener("click", function() {
+    // Check if the bet amount is empty
+    let betAmount = document.getElementById("bet-amount").value;
+    
+    // If bet amount is empty, show the popup
+    if (!betAmount) {
+        showPopup();
+    } else {
+        // If bet amount is provided, proceed with the spinning process
+        Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+        // Insert logic here for the spinning process, if any
     }
 });
