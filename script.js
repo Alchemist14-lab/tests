@@ -122,3 +122,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+// Handle Spin Button with HEAVY Haptic Feedback and Show Popup
+document.querySelector(".spin-button").addEventListener("click", function() {
+    Telegram.WebApp.HapticFeedback.impactOccurred('heavy');  // Haptic feedback
+    showPopup();  // Show the popup
+});
