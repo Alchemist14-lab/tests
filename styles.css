@@ -349,7 +349,7 @@ body {
 
 .bet-amount-container {
     text-align: center;
-    margin-bottom:-19px;
+    margin-bottom: -19px;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -357,7 +357,6 @@ body {
 }
 
 /* Input box */
-
 #bet-amount {
     width: 180px; /* Fixed width instead of percentage */
     padding: 4px;
