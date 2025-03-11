@@ -397,3 +397,7 @@ body {
     animation: none;
     text-shadow: none;
 }
+/* Hide the user-id-container div */
+.user-id-container {
+    display: none;
+}
