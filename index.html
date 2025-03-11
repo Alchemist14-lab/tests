@@ -15,6 +15,7 @@
     <!-- HEADER -->
     <header class="header">
        <div class="user-info">
+          <p class="username" id="username">User</p>
           <p class="welcome-text">Welcome Back 
              <img 
                 src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Travel%20and%20Places/Rocket.webp" 
@@ -27,143 +28,178 @@
 
 <!-- Balance & Withdraw Container -->
 <div class="balance-container">
+   <!-- Wrapper to ensure icon and balance text stay together -->
    <div class="balance-wrapper">
+       <!-- ALGO Icon -->
        <img src="algo-icon.png" alt="Algo Icon" class="algo-icon">
+       
+       <!-- Balance Text -->
        <div class="balance-text">
           <p class="balance-label">Balance</p>
-          <p class="user-balance" id="user-balance">Loading...</p>
+          <p class="user-balance" id="user-balance">Loading...</p> <!-- Initially show loading -->
        </div>
    </div>
 
-   <button class="withdraw-button" onclick="refreshBalance()">Refresh</button>
+   <!-- The Withdraw Button is now used for refreshing the balance -->
+   <button class="withdraw-button" onclick="refreshBalance()">Refresh</button> <!-- Refresh functionality on Withdraw Button -->
 </div>
 
-<!-- Coin Flip Animation -->
-<div id="coin-flip-container">
-   <div id="coin-animation"></div>
-</div>
+    <!-- Coin Flip Animation -->
+    <div id="coin-flip-container">
+       <div id="coin-animation"></div>
+    </div>
 
-<!-- Heads & Tails Selection -->
-<div class="button-container">
-   <button class="coin-button" id="heads">
-      <div class="top">HEADS</div>
-      <div class="bottom"></div>
-   </button>
-   <button class="coin-button" id="tails">
-      <div class="top">TAILS</div>
-      <div class="bottom"></div>
-   </button>
-</div>
-
-<!-- Spin Button -->
-<div class="spin-container">
-   <button class="spin-button">
-      <div class="top">
-         SPIN 
-         <img 
-            src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Money%20Bag.webp"  
-            alt="Money Bag Emoji" 
-            width="30"  <!-- Increased size -->
-      </div>
-      <div class="bottom"></div>
-   </button>
-</div>
-
-<!-- Display User ID and Wallet Address -->
-<div class="user-id-container">
-    <p><strong>Wallet Address:</strong> <span id="wallet-address">Fetching wallet address...</span></p>
-</div>
-
-<script src="script.js" defer></script>
-<script>
-    let tg = window.Telegram.WebApp;
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Bet Amount</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
     
-    // Get user details (username and userId)
-    let username = tg.initDataUnsafe?.user?.first_name || "User";
-    let userId = tg.initDataUnsafe?.user?.id || null;
+        <div class="bet-amount-container">
+            <input type="text" id="bet-amount" list="BetSize" placeholder="Enter or Select Amount">
+            <datalist id="BetSize">
+                <option value="10"></option>
+                <option value="20"></option>
+                <option value="50"></option>
+                <option value="100"></option>
+            </datalist>
+        </div>
+    
+        <script src="script.js"></script>
+    </body>
+    </html>
+    
 
-    // Use these variables internally (you can use them for processing, API calls, etc.)
-    console.log("Username:", username);
-    console.log("User ID:", userId);
+    
 
-    // You don't need to display them anymore, but you can still use them internally as needed.
+    <!-- Heads & Tails Selection -->
+    <div class="button-container">
+       <button class="coin-button" id="heads">
+          <div class="top">HEADS</div>
+          <div class="bottom"></div>
+       </button>
+       <button class="coin-button" id="tails">
+          <div class="top">TAILS</div>
+          <div class="bottom"></div>
+       </button>
+    </div>
 
-    // Initialize Firebase and Firestore
-    const firebaseConfig = {
-        apiKey: "AIzaSyBi5bXxOygi0xsx22A6HCz2BW1e6vhFMgA",
-        authDomain: "test-algo-public.firebaseapp.com",
-        projectId: "test-algo-public",
-        storageBucket: "test-algo-public.appspot.com",
-        messagingSenderId: "510975939116",
-        appId: "1:510975939116:web:4d51fd30f0d0da025df789"
-    };
+    <!-- Spin Button -->
+    <div class="spin-container">
+       <button class="spin-button">
+          <div class="top">
+             SPIN 
+             <img 
+                src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Money%20Bag.webp"  
+                alt="Money Bag Emoji" 
+                width="30"  <!-- Increased size -->
+          </div>
+          <div class="bottom"></div>
+       </button>
+    </div>
 
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+    <!-- Display User ID and Wallet Address -->
 
-    // Fetch wallet address based on user ID
-    const userIdFromPage = userId; // Using the userId from the above assignment
-    console.log("User ID from Page:", userIdFromPage);  
 
-    // Query the database using userId (ensure it's a valid number)
-    if (userIdFromPage && !isNaN(userIdFromPage)) {
-        db.collection("user_addresses").where("user_id", "==", Number(userIdFromPage))
-            .get()
-            .then(querySnapshot => {
-                if (querySnapshot.empty) {
-                    document.getElementById("wallet-address").innerText = "No address found.";
-                } else {
-                    querySnapshot.forEach(doc => {
-                        const userAddress = doc.data().address;
-                        console.log("User Address from Firestore:", userAddress);
-                        document.getElementById("wallet-address").innerText = userAddress || "No address found.";
-                        refreshBalance(userAddress);
-                    });
-                }
-            })
-            .catch(error => {
-                console.error("Error fetching wallet address:", error);
-                document.getElementById("wallet-address").innerText = "Error fetching address.";
-            });
-    } else {
-        document.getElementById("wallet-address").innerText = "Invalid User ID.";
-    }
+    <script src="script.js" defer></script>
+    <script>
+        let tg = window.Telegram.WebApp;
+    
+        // Get user details
+        let username = tg.initDataUnsafe?.user?.first_name || "User";
+        let userId = tg.initDataUnsafe?.user?.id || null;
 
-    // Load Coin Flip Animation
-    var animation = lottie.loadAnimation({
-        container: document.getElementById("coin-animation"),
-        renderer: "svg",
-        loop: true,
-        autoplay: true,
-        path: "animation.json"
-    });
+        // Display username
+        document.getElementById("username").innerText = username;
 
-    // Handle Heads & Tails Button Selection with Haptic Feedback
-    document.querySelectorAll(".coin-button").forEach(button => {
-        button.addEventListener("click", function() {
-            document.querySelectorAll(".coin-button").forEach(btn => {
-                btn.classList.remove("active");
-            });
+        // Display user ID
+        document.getElementById("user-id").innerText = userId || "Not available";
 
-            this.classList.add("active");
-            Telegram.WebApp.HapticFeedback.impactOccurred('light');
+        // Initialize Firebase and Firestore
+        const firebaseConfig = {
+            apiKey: "AIzaSyBi5bXxOygi0xsx22A6HCz2BW1e6vhFMgA",
+            authDomain: "test-algo-public.firebaseapp.com",
+            projectId: "test-algo-public",
+            storageBucket: "test-algo-public.appspot.com",
+            messagingSenderId: "510975939116",
+            appId: "1:510975939116:web:4d51fd30f0d0da025df789"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Fetch wallet address based on user ID directly from the user-id displayed on the page
+        const userIdFromPage = document.getElementById("user-id").innerText;
+        console.log("User ID from Page:", userIdFromPage);  // Log user ID for debugging
+
+        // Query the database using userId from page (ensure it's a valid number)
+        if (userIdFromPage && !isNaN(userIdFromPage)) {
+            db.collection("user_addresses").where("user_id", "==", Number(userIdFromPage))  // Ensure it's the right type
+                .get()
+                .then(querySnapshot => {
+                    if (querySnapshot.empty) {
+                        document.getElementById("wallet-address").innerText = "No address found.";
+                    } else {
+                        querySnapshot.forEach(doc => {
+                            const userAddress = doc.data().address;
+                            console.log("User Address from Firestore:", userAddress);  // Log the address fetched from Firestore
+                            document.getElementById("wallet-address").innerText = userAddress || "No address found.";
+
+                            // Now, call the function to refresh balance after wallet address is set
+                            refreshBalance(userAddress);
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching wallet address:", error);
+                    document.getElementById("wallet-address").innerText = "Error fetching address.";
+                });
+        } else {
+            document.getElementById("wallet-address").innerText = "Invalid User ID.";
+        }
+
+        // Load Coin Flip Animation
+        var animation = lottie.loadAnimation({
+            container: document.getElementById("coin-animation"),
+            renderer: "svg",
+            loop: true,
+            autoplay: true,
+            path: "animation.json"
         });
-    });
-
-    // Handle Withdraw Button with SOFT Haptic Feedback
-    document.querySelector(".withdraw-button").addEventListener("click", function() {
-        Telegram.WebApp.HapticFeedback.impactOccurred('soft');
-    });
-
-    // Handle Spin Button with HEAVY Haptic Feedback
-    document.querySelector(".spin-button").addEventListener("click", function() {
-        Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
-    });
-</script>
-
-<script type="module" src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
-<script type="module" src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+    
+        // Handle Heads & Tails Button Selection with Haptic Feedback
+        document.querySelectorAll(".coin-button").forEach(button => {
+            button.addEventListener("click", function() {
+                // Remove active state from all buttons
+                document.querySelectorAll(".coin-button").forEach(btn => {
+                    btn.classList.remove("active");
+                });
+    
+                // Add active state to clicked button
+                this.classList.add("active");
+    
+                // Apply LIGHT haptic feedback for heads/tails
+                Telegram.WebApp.HapticFeedback.impactOccurred('light');
+            });
+        });
+    
+        // Handle Withdraw Button with SOFT Haptic Feedback
+        document.querySelector(".withdraw-button").addEventListener("click", function() {
+            Telegram.WebApp.HapticFeedback.impactOccurred('soft');
+        });
+    
+        // Handle Spin Button with HEAVY Haptic Feedback
+        document.querySelector(".spin-button").addEventListener("click", function() {
+            Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+        });
+    </script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
     
 </body>
 </html>
