@@ -186,24 +186,38 @@
             showPopup();  // Show the popup
         });
 
-        // Function to show the popup
-        function showPopup() {
-            Telegram.WebApp.showPopup({
-                title: 'Popup title',
-                message: 'Popup message',
-                buttons: [
-                    {id: 'delete', type: 'destructive', text: 'Delete all'},
-                    {id: 'faq', type: 'default', text: 'Open FAQ'},
-                    {type: 'cancel'},
-                ]
-            }, function (buttonId) {
-                if (buttonId === 'delete') {
-                    alert("'Delete all' selected");
-                } else if (buttonId === 'faq') {
-                    Telegram.WebApp.openLink('https://telegram.org/faq');
-                }
-            });
+        document.querySelector(".spin-button").addEventListener("click", function() {
+    // Check if the bet amount is filled and if either Heads or Tails is selected
+    let betAmount = document.getElementById("bet-amount").value;
+    let selectedOption = document.querySelector(".coin-button.active");
+
+    // If either bet amount is empty or no selection is made for heads/tails, show the popup
+    if (!betAmount || !selectedOption) {
+        showPopup();  // Show the popup
+    } else {
+        // If everything is filled, proceed without showing the popup
+        Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+        // Add logic for spinning the coin here, if any
+    }
+});
+
+// Function to show the popup
+function showPopup() {
+    Telegram.WebApp.showPopup({
+        title: 'Please Review 🚫',
+        message: 'Please fill in the bet amount and select either Heads or Tails before proceeding.',
+        buttons: [
+            {type: 'cancel'},
+        ]
+    }, function (buttonId) {
+        if (buttonId === 'delete') {
+            alert("'Delete all' selected");
+        } else if (buttonId === 'faq') {
+            Telegram.WebApp.openLink('https://telegram.org/faq');
         }
+    });
+}
+
 
     </script>
     <script type="module" src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
