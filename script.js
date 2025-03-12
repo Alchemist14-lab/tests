@@ -122,40 +122,60 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-// Function to show the popup
-function showPopup() {
-    console.log("Popup function triggered"); // Debugging line
-    Telegram.WebApp.showPopup({
-        title  : 'Popup title',
-        message: 'Please enter a bet amount before spinning.',
-        buttons: [
-            {id: 'delete', type: 'destructive', text: 'Delete all'},
-            {id: 'faq', type: 'default', text: 'Open FAQ'},
-            {type: 'cancel'},
-        ]
-    }, function (buttonId) {
-        console.log("Popup button clicked:", buttonId); // Debugging line
-        if (buttonId === 'delete') {
-            DemoApp.showAlert("'Delete all' selected");
-        } else if (buttonId === 'faq') {
-            Telegram.WebApp.openLink('https://telegram.org/faq');
-        }
-    });
+// Function to validate before spinning
+function validateAndSpin() {
+    // Get the selected bet amount
+    const betAmount = document.getElementById("bet-amount").value.trim();
+
+    // Check if the bet amount is provided
+    const betAmountValid = betAmount !== "";
+
+    // Check if either Heads or Tails button is active
+    const isHeadsSelected = document.getElementById("heads").classList.contains("active");
+    const isTailsSelected = document.getElementById("tails").classList.contains("active");
+
+    const betConditionMet = betAmountValid && (isHeadsSelected || isTailsSelected);
+
+    if (!betConditionMet) {
+        // Show error message if conditions are not met
+        showError("Please enter a bet amount and select either Heads or Tails.");
+    } else {
+        // Hide the error message if conditions are met
+        hideError();
+
+        // Proceed with the spin logic if all conditions are met
+        console.log("Bet Amount:", betAmount);
+        console.log("Selected Option:", isHeadsSelected ? "Heads" : "Tails");
+
+        // Here, you can call the function to start the coin flip animation or the betting process
+        startSpin(betAmount, isHeadsSelected ? "Heads" : "Tails");
+    }
 }
 
-// Handle Spin Button with Bet Amount Check
-document.querySelector(".spin-button").addEventListener("click", function() {
-    // Get the value of the bet amount field
-    let betAmount = document.getElementById("bet-amount").value;
-
-    console.log("Bet amount entered:", betAmount); // Debugging line
-
-    // If bet amount is empty, show the popup
-    if (!betAmount) {
-        showPopup();
+// Function to show the error message
+function showError(message) {
+    const errorMessageElement = document.getElementById("error-message");
+    if (errorMessageElement) {
+        errorMessageElement.innerText = message;
+        errorMessageElement.style.display = "block"; // Show the error message
     } else {
-        console.log("Proceeding with the spin action..."); // Debugging line
-        // Insert logic here for the spinning process if needed.
-        Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+        // If error message element doesn't exist, create it dynamically
+        const newErrorElement = document.createElement("div");
+        newErrorElement.id = "error-message";
+        newErrorElement.innerText = message;
+        newErrorElement.style.color = "red";
+        newErrorElement.style.marginTop = "10px";
+        document.querySelector(".spin-container").appendChild(newErrorElement);
     }
-});
+}
+
+// Function to hide the error message
+function hideError() {
+    const errorMessageElement = document.getElementById("error-message");
+    if (errorMessageElement) {
+        errorMessageElement.style.display = "none"; // Hide the error message
+    }
+}
+
+// Attach event listener to the spin button
+document.querySelector(".spin-button").addEventListener("click", validateAndSpin);
