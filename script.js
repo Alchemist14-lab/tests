@@ -122,6 +122,22 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+// Function to show the Telegram popup instead of an error message
+function showPopup() {
+    Telegram.WebApp.showPopup({
+        title: 'Error',
+        message: 'Please enter a bet amount and select either Heads or Tails.',
+        buttons: [
+            { id: 'retry', type: 'default', text: 'Try Again' },
+            { type: 'cancel' }
+        ]
+    }, function (buttonId) {
+        if (buttonId === 'retry') {
+            console.log("'Try Again' selected");
+        }
+    });
+}
+
 // Function to validate before spinning
 function validateAndSpin() {
     // Get the selected bet amount
@@ -137,43 +153,15 @@ function validateAndSpin() {
     const betConditionMet = betAmountValid && (isHeadsSelected || isTailsSelected);
 
     if (!betConditionMet) {
-        // Show error message if conditions are not met
-        showError("Please enter a bet amount and select either Heads or Tails.");
+        // Show popup if conditions are not met
+        showPopup();
     } else {
-        // Hide the error message if conditions are met
-        hideError();
-
         // Proceed with the spin logic if all conditions are met
         console.log("Bet Amount:", betAmount);
         console.log("Selected Option:", isHeadsSelected ? "Heads" : "Tails");
 
-        // Here, you can call the function to start the coin flip animation or the betting process
+        // Call the function to start the coin flip animation or betting process
         startSpin(betAmount, isHeadsSelected ? "Heads" : "Tails");
-    }
-}
-
-// Function to show the error message
-function showError(message) {
-    const errorMessageElement = document.getElementById("error-message");
-    if (errorMessageElement) {
-        errorMessageElement.innerText = message;
-        errorMessageElement.style.display = "block"; // Show the error message
-    } else {
-        // If error message element doesn't exist, create it dynamically
-        const newErrorElement = document.createElement("div");
-        newErrorElement.id = "error-message";
-        newErrorElement.innerText = message;
-        newErrorElement.style.color = "red";
-        newErrorElement.style.marginTop = "10px";
-        document.querySelector(".spin-container").appendChild(newErrorElement);
-    }
-}
-
-// Function to hide the error message
-function hideError() {
-    const errorMessageElement = document.getElementById("error-message");
-    if (errorMessageElement) {
-        errorMessageElement.style.display = "none"; // Hide the error message
     }
 }
 
