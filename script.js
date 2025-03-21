@@ -207,7 +207,6 @@ function validateAndSpin() {
 // Attach event listener to the spin button
 document.querySelector(".spin-button").addEventListener("click", validateAndSpin);
 
-// Function to start the spin with background blur, fast spinning, and haptic feedback
 function startSpin(betAmount, selectedOption) {
     console.log("Starting spin with bet amount: " + betAmount + " and selected option: " + selectedOption);
 
@@ -215,7 +214,7 @@ function startSpin(betAmount, selectedOption) {
     document.body.classList.add("blurred");
 
     // 2. Set the Lottie animation to spin faster
-    let coinSpin = document.getElementById("coin-animation"); // Assuming your coin animation is identified as 'coin-lottie'
+    let coinSpin = document.getElementById("coin-lottie"); // Assuming your coin animation is identified as 'coin-lottie'
 
     // Initialize Lottie animation (if not already initialized)
     let lottieInstance = lottie.loadAnimation({
@@ -223,7 +222,7 @@ function startSpin(betAmount, selectedOption) {
         renderer: 'svg',
         loop: true,
         autoplay: true,
-        path: '/tests/animation.json'  // Replace with your Lottie JSON file path
+        path: 'path/to/coin-spin.json'  // Replace with your Lottie JSON file path
     });
 
     // Wait for Lottie animation to load, then set speed
