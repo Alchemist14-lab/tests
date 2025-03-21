@@ -12,88 +12,86 @@
 </head>
 <body>
 
-    <!-- HEADER -->
-    <header class="header">
-       <div class="user-info">
-          <p class="username" id="username">User</p>
-          <p class="welcome-text">Welcome Back 
-             <img 
-                src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Travel%20and%20Places/Rocket.webp" 
-                alt="Rocket Emoji" 
-                width="30"  <!-- Increased size -->
-          </p>
-       </div>
-       <img src="profile.png" alt="Profile Picture" id="profile-pic" class="profile-pic">
-    </header>
+    <div id="gameContainer">  <!-- Wrapped all content inside this div -->
 
-<!-- Balance & Withdraw Container -->
-<div class="balance-container">
-   <!-- Wrapper to ensure icon and balance text stay together -->
-   <div class="balance-wrapper">
-       <!-- ALGO Icon -->
-       <img src="algo-icon.png" alt="Algo Icon" class="algo-icon">
-       
-       <!-- Balance Text -->
-       <div class="balance-text">
-          <p class="balance-label">Balance</p>
-          <p class="user-balance" id="user-balance">Loading...</p> <!-- Initially show loading -->
-       </div>
-   </div>
+        <!-- HEADER -->
+        <header class="header">
+           <div class="user-info">
+              <p class="username" id="username">User</p>
+              <p class="welcome-text">Welcome Back 
+                 <img 
+                    src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Travel%20and%20Places/Rocket.webp" 
+                    alt="Rocket Emoji" 
+                    width="30">
+              </p>
+           </div>
+           <img src="profile.png" alt="Profile Picture" id="profile-pic" class="profile-pic">
+        </header>
 
-   <!-- The Withdraw Button is now used for refreshing the balance -->
-   <button class="withdraw-button" onclick="refreshBalance()">Refresh</button> <!-- Refresh functionality on Withdraw Button -->
-</div>
+        <!-- Balance & Withdraw Container -->
+        <div class="balance-container">
+           <div class="balance-wrapper">
+               <img src="algo-icon.png" alt="Algo Icon" class="algo-icon">
+               <div class="balance-text">
+                  <p class="balance-label">Balance</p>
+                  <p class="user-balance" id="user-balance">Loading...</p>
+               </div>
+           </div>
+           <button class="withdraw-button" onclick="refreshBalance()">Refresh</button>
+        </div>
 
-    <!-- Coin Flip Animation -->
-    <div id="coin-flip-container">
-       <div id="coin-animation"></div>
-    </div>
+        <!-- Coin Flip Animation -->
+        <div id="coin-flip-container">
+           <div id="coin-animation"></div>
+        </div>
 
-    <!-- Bet Amount Section -->
-    <div class="bet-amount-container">
-        <input type="text" id="bet-amount" list="BetSize" placeholder="Enter or Select Amount">
-        <datalist id="BetSize">
-            <option value="10"></option>
-            <option value="20"></option>
-            <option value="50"></option>
-            <option value="100"></option>
-        </datalist>
-    </div>
+        <!-- Bet Amount Section -->
+        <div class="bet-amount-container">
+            <input type="text" id="bet-amount" list="BetSize" placeholder="Enter or Select Amount">
+            <datalist id="BetSize">
+                <option value="10"></option>
+                <option value="20"></option>
+                <option value="50"></option>
+                <option value="100"></option>
+            </datalist>
+        </div>
 
-    <!-- Heads & Tails Selection -->
-    <div class="button-container">
-       <button class="coin-button" id="heads">
-          <div class="top">HEADS</div>
-          <div class="bottom"></div>
-       </button>
-       <button class="coin-button" id="tails">
-          <div class="top">TAILS</div>
-          <div class="bottom"></div>
-       </button>
-    </div>
+        <!-- Heads & Tails Selection -->
+        <div class="button-container">
+           <button class="coin-button" id="heads">
+              <div class="top">HEADS</div>
+              <div class="bottom"></div>
+           </button>
+           <button class="coin-button" id="tails">
+              <div class="top">TAILS</div>
+              <div class="bottom"></div>
+           </button>
+        </div>
 
-    <!-- Spin Button -->
-    <div class="spin-container">
-       <button class="spin-button">
-          <div class="top">
-             SPIN 
-             <img 
-                src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Money%20Bag.webp"  
-                alt="Money Bag Emoji" 
-                width="30"  <!-- Increased size -->
-          </div>
-          <div class="bottom"></div>
-       </button>
-    </div>
+        <!-- Spin Button -->
+        <div class="spin-container">
+           <button class="spin-button">
+              <div class="top">
+                 SPIN 
+                 <img 
+                    src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Money%20Bag.webp"  
+                    alt="Money Bag Emoji" 
+                    width="30">
+              </div>
+              <div class="bottom"></div>
+           </button>
+        </div>
 
-    <!-- Add this below your spin button or wherever you'd like to show the error message -->
-    <div id="error-message" style="display: none; color: red; margin-top: 10px;"></div>
+        <!-- Error Message -->
+        <div id="error-message" style="display: none; color: red; margin-top: 10px;"></div>
 
-    <!-- Display User ID and Wallet Address -->
-    <div class="user-id-container">
-        <p><strong>User ID:</strong> <span id="user-id">Loading...</span></p>
-        <p><strong>Wallet Address:</strong> <span id="wallet-address">Fetching wallet address...</span> <!-- New address display --></p>
-    </div>
+        <!-- User ID and Wallet Address -->
+        <div class="user-id-container">
+            <p><strong>User ID:</strong> <span id="user-id">Loading...</span></p>
+            <p><strong>Wallet Address:</strong> <span id="wallet-address">Fetching wallet address...</span></p>
+        </div>
+
+    </div> 
 
     <script src="script.js" defer></script>
     <script>
@@ -188,5 +186,6 @@
             Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
         });
     </script>
+    
 </body>
 </html>
