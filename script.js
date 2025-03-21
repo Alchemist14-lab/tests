@@ -217,12 +217,8 @@ document.querySelector(".spin-button").addEventListener("click", validateAndSpin
 function startSpin(betAmount, selectedOption) {
     console.log("Starting spin with bet amount: " + betAmount + " and selected option: " + selectedOption);
 
-    // Apply background blur effect to the entire page
-    document.body.style.filter = "blur(5px)";
-
-    // Hide all UI elements except the spinning coin
-    document.querySelector(".betting-ui").style.display = "none"; // Hide betting UI
-    document.querySelector(".coin").style.display = "block"; // Show spinning coin
+    // Add blur effect
+    document.getElementById("gameContainer").classList.add("blur-effect");
 
     // Start haptic feedback at intervals
     let hapticInterval = setInterval(() => {
@@ -231,12 +227,8 @@ function startSpin(betAmount, selectedOption) {
 
     // Simulate the spin (replace with actual game logic if needed)
     setTimeout(() => {
-        clearInterval(hapticInterval); // Stop haptic feedback
-
-        // Remove background blur effect and restore UI
-        document.body.style.filter = "none";
-        document.querySelector(".betting-ui").style.display = "block"; // Show betting UI again
-        document.querySelector(".coin").style.display = "none"; // Hide the coin
+        clearInterval(hapticInterval); // Stop haptic feedback after spin
+        document.getElementById("gameContainer").classList.remove("blur-effect"); // Remove blur effect
 
         // Randomly determine the outcome (Heads or Tails)
         const outcome = Math.random() < 0.5 ? "Heads" : "Tails";
