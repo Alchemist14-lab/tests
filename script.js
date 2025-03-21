@@ -207,31 +207,54 @@ function validateAndSpin() {
 // Attach event listener to the spin button
 document.querySelector(".spin-button").addEventListener("click", validateAndSpin);
 
-// Function to start the spin or betting animation
+// Function to start the spin with background blur, fast spinning, and haptic feedback
 function startSpin(betAmount, selectedOption) {
     console.log("Starting spin with bet amount: " + betAmount + " and selected option: " + selectedOption);
 
+    // 1. Blur the background
+    document.body.classList.add("blurred");
+
+    // 2. Set the Lottie animation to spin faster
+    let coinSpin = document.getElementById("coin-lottie"); // Assuming your coin animation is identified as 'coin-lottie'
+    let lottieInstance = lottie.loadAnimation({
+        container: coinSpin,
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'path/to/coin-spin.json'  // Replace with your Lottie JSON file path
+    });
+    
+    // Increase the speed of the animation (e.g., speed up by a factor of 2)
+    lottieInstance.setSpeed(2);  // Adjust this value as per your need (2x speed)
+
+    // 3. Start Haptic Feedback in a repeating pattern during spin
+    let hapticInterval = setInterval(() => {
+        if (navigator.vibrate) {
+            navigator.vibrate([50, 50, 50]); // Quick vibration feedback
+        }
+    }, 100);  // Repeating vibration every 100ms
+
     // Simulate the spin (you can replace this with your actual game logic)
     setTimeout(() => {
-        // Example outcome of the spin (randomizing between Heads and Tails)
+        // Stop haptic feedback
+        clearInterval(hapticInterval);
+        
+        // Spin result (randomize outcome between Heads and Tails)
         const outcome = Math.random() < 0.5 ? "Heads" : "Tails";
-
         console.log("Spin result: " + outcome);
 
-        // Determine if the user won or lost
+        // 4. Stop the animation, reset speed
+        lottieInstance.setSpeed(1);  // Reset to normal speed (or can continue at a slower speed)
+
+        // Show result popup
         if (outcome === selectedOption) {
-            console.log("You won the bet!");
-            // Show win popup
             showPopup("You Win!", `Congratulations! You won the bet with ${outcome}.`);
-            // You can add logic here to credit the user's balance if they win.
         } else {
-            console.log("You lost the bet.");
-            // Show lose popup
             showPopup("You Lose!", `Sorry, you lost the bet. The result was ${outcome}.`);
-            // You can add logic here to deduct the user's bet amount if they lose.
         }
 
-        // Optionally, update the UI to show the result (e.g., with a popup or UI change)
-        // This part depends on your game/UI setup
-    }, 2000); // Simulate a 2-second spin time
+        // 5. Remove background blur
+        document.body.classList.remove("blurred");
+
+    }, 2000);  // Adjust the duration to match your animation speed
 }
