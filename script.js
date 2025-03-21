@@ -207,25 +207,11 @@ function validateAndSpin() {
 // Attach event listener to the spin button
 document.querySelector(".spin-button").addEventListener("click", validateAndSpin);
 
-
-
-// Function to start the spin with background blur, fast haptic feedback, and hiding UI elements
+// Function to start the spin or betting animation
 function startSpin(betAmount, selectedOption) {
     console.log("Starting spin with bet amount: " + betAmount + " and selected option: " + selectedOption);
 
-    // Apply background blur effect to the entire page
-    document.body.style.filter = "blur(5px)"; // Apply blur effect
-
-    // Hide all UI elements except the spinning coin
-    document.querySelector(".betting-ui").style.display = "none"; // Assuming the betting UI is wrapped in this class
-    document.querySelector(".coin").style.display = "block"; // Show the spinning coin
-
-    // Start fast, repeated haptic feedback (simulate excitement)
-    const hapticInterval = setInterval(() => {
-        Telegram.WebApp.HapticFeedback.impactOccurred('soft'); // Continuous haptic feedback
-    }, 100); // Trigger every 100ms (fast repeated haptic feedback)
-
-    // Simulate the spin animation with a delay
+    // Simulate the spin (you can replace this with your actual game logic)
     setTimeout(() => {
         // Example outcome of the spin (randomizing between Heads and Tails)
         const outcome = Math.random() < 0.5 ? "Heads" : "Tails";
@@ -237,27 +223,15 @@ function startSpin(betAmount, selectedOption) {
             console.log("You won the bet!");
             // Show win popup
             showPopup("You Win!", `Congratulations! You won the bet with ${outcome}.`);
-            // Optionally, credit the user's balance here
+            // You can add logic here to credit the user's balance if they win.
         } else {
             console.log("You lost the bet.");
             // Show lose popup
             showPopup("You Lose!", `Sorry, you lost the bet. The result was ${outcome}.`);
-            // Optionally, deduct the user's bet amount here
+            // You can add logic here to deduct the user's bet amount if they lose.
         }
 
-        // Stop the haptic feedback and restore the UI after the spin result
-        clearInterval(hapticInterval);
-
-        // Remove background blur effect and restore UI
-        document.body.style.filter = "none"; // Remove the blur
-        document.querySelector(".betting-ui").style.display = "block"; // Show betting UI again
-        document.querySelector(".coin").style.display = "none"; // Hide the coin
-
-    }, 3000); // Simulate a 3-second spin time
+        // Optionally, update the UI to show the result (e.g., with a popup or UI change)
+        // This part depends on your game/UI setup
+    }, 2000); // Simulate a 2-second spin time
 }
-
-// The event listener for the spin button
-document.querySelector(".spin-button").addEventListener("click", validateAndSpin);
-
-// The rest of your code..
-
