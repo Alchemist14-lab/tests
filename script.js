@@ -167,7 +167,8 @@ function fetchBalance(walletAddress, callback) {
         });
 }
 
-// Function to validate and spin
+let hapticFeedbackInterval;
+
 function validateAndSpin() {
     const betAmountInput = document.getElementById("bet-amount").value.trim();
     const betAmount = parseFloat(betAmountInput);
@@ -199,39 +200,52 @@ function validateAndSpin() {
             showPopup("Insufficient Balance", "Your balance is too low for this bet.");
         } else {
             console.log("Bet confirmed:", betAmount, isHeadsSelected ? "Heads" : "Tails");
+
+            // Start continuous haptic feedback
+            startHapticFeedback();
+
+            // Trigger the spin
             startSpin(betAmount, isHeadsSelected ? "Heads" : "Tails");
         }
     });
 }
 
-// Attach event listener to the spin button
-document.querySelector(".spin-button").addEventListener("click", validateAndSpin);
+function startHapticFeedback() {
+    // Start the continuous haptic feedback loop
+    hapticFeedbackInterval = setInterval(function() {
+        Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+    }, 200); // Trigger every 200ms for continuous feedback
+}
 
-// Function to start the spin or betting animation
+function stopHapticFeedback() {
+    // Stop the haptic feedback loop
+    clearInterval(hapticFeedbackInterval);
+}
+
+// Modify startSpin to stop haptic feedback when the result popup shows
 function startSpin(betAmount, selectedOption) {
     console.log("Starting spin with bet amount: " + betAmount + " and selected option: " + selectedOption);
 
     // Simulate the spin (you can replace this with your actual game logic)
     setTimeout(() => {
-        // Example outcome of the spin (randomizing between Heads and Tails)
         const outcome = Math.random() < 0.5 ? "Heads" : "Tails";
-
         console.log("Spin result: " + outcome);
 
-        // Determine if the user won or lost
+        // Show result popup
         if (outcome === selectedOption) {
             console.log("You won the bet!");
-            // Show win popup
             showPopup("You Win!", `Congratulations! You won the bet with ${outcome}.`);
-            // You can add logic here to credit the user's balance if they win.
         } else {
             console.log("You lost the bet.");
-            // Show lose popup
             showPopup("You Lose!", `Sorry, you lost the bet. The result was ${outcome}.`);
-            // You can add logic here to deduct the user's bet amount if they lose.
         }
 
-        // Optionally, update the UI to show the result (e.g., with a popup or UI change)
-        // This part depends on your game/UI setup
+        // Stop the haptic feedback loop after the result is shown
+        stopHapticFeedback();
     }, 2000); // Simulate a 2-second spin time
+}
+
+function showPopup(title, message) {
+    // Example popup function (can be customized)
+    alert(`${title}: ${message}`);
 }
