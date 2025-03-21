@@ -223,7 +223,7 @@ function startSpin(betAmount, selectedOption) {
     // Start haptic feedback at intervals
     let hapticInterval = setInterval(() => {
         Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
-    }, 500); // Vibrate every 500ms
+    }, 100); // Vibrate every 500ms
 
     // Simulate the spin (replace with actual game logic if needed)
     setTimeout(() => {
