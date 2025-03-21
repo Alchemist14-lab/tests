@@ -79,7 +79,7 @@ body {
     align-items: center; /* Ensures all items align correctly */
     background: #606060;
     padding: 8px 10px;
-    width: 90%;
+    width: 80%;
     max-width: 500px;
     height: 50px;
     border-radius: 15px;
@@ -405,7 +405,7 @@ body {
 .blur-effect {
     filter: blur(5px);
     transition: filter 0.3s ease-in-out; /* Smooth effect */
-    
+
 }
 #gameContainer {
     margin: 0;
@@ -418,5 +418,5 @@ body {
     flex-direction: column; /* Keeps items stacked properly */
     align-items: center; /* Centers the content */
     justify-content: center;
-    overflow: hidden; /* Prevents any unnecessary scroll */
+    
 }
