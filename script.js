@@ -259,5 +259,5 @@ function startSpin(betAmount, selectedOption) {
 // The event listener for the spin button
 document.querySelector(".spin-button").addEventListener("click", validateAndSpin);
 
-// The rest of your code...
+// The rest of your code..
 
