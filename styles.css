@@ -401,3 +401,20 @@ body {
 .user-id-container {
     display: none;
 }
+/* Styling for error message */
+#error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+/* Optional: Glow effect for error */
+.error-glow {
+    border: 2px solid red;
+    box-shadow: 0 0 5px 2px red;
+}
+/* Background blur effect */
+.blurred {
+    filter: blur(5px);
+    pointer-events: none;  /* Disable interaction with the blurred elements */
+}
