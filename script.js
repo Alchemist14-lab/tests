@@ -216,30 +216,78 @@ function fetchBalance(walletAddress, callback) {
         });
 }
 
+// Function to show a Telegram popup with a dynamic title and message
+function showPopup(title, message) {
+    Telegram.WebApp.showPopup({
+        title: title,
+        message: message,
+        buttons: [
+            { id: 'retry', type: 'default', text: 'Try Again' },
+            { type: 'cancel' }
+        ]
+    }, function (buttonId) {
+        if (buttonId === 'retry') {
+            console.log("'Try Again' selected");
+        }
+    });
+}
+
+// Function to fetch wallet balance using Delfly API
+function fetchBalance(walletAddress, callback) {
+    let url = `https://mainnet-idx.algonode.cloud/v2/accounts/${walletAddress}`;
+
+    console.log("Fetching balance for address:", walletAddress);
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`API error: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data && data.account) {
+                let balance = parseFloat(data.account.amount) / 1e6; // Convert to ALGO
+                console.log("Fetched Balance:", balance);
+                callback(balance); // Pass balance to callback function
+            } else {
+                console.error("Invalid API response: No account data.");
+                callback(0); // Assume zero balance
+            }
+        })
+        .catch(error => {
+            console.error("Balance fetch error:", error);
+            callback(0); // Assume zero balance on error
+        });
+}
+
 // Function to validate before spinning
 function validateAndSpin() {
-    const betAmount = document.getElementById("bet-amount").value.trim();
-    const betAmountValid = betAmount !== "" && !isNaN(betAmount);
-    const betAmountNumber = parseFloat(betAmount);
+    const betAmountInput = document.getElementById("bet-amount").value.trim();
+    const betAmount = parseFloat(betAmountInput); // Convert input to a float
 
-    const isHeadsSelected = document.getElementById("heads").classList.contains("active");
-    const isTailsSelected = document.getElementById("tails").classList.contains("active");
-    const betConditionMet = betAmountValid && (isHeadsSelected || isTailsSelected);
-
-    if (!betConditionMet) {
-        showPopup("Error", "Please enter a bet amount and select either Heads or Tails.");
+    if (isNaN(betAmount) || betAmount <= 0) {
+        showPopup("Error", "Please enter a valid bet amount.");
         return;
     }
 
-    // Fetch the latest wallet balance before proceeding
+    const isHeadsSelected = document.getElementById("heads").classList.contains("active");
+    const isTailsSelected = document.getElementById("tails").classList.contains("active");
+
+    if (!isHeadsSelected && !isTailsSelected) {
+        showPopup("Error", "Please select either Heads or Tails.");
+        return;
+    }
+
+    // Fetch latest balance before proceeding
     fetchBalance(walletAddress, function (userBalance) {
-        if (betAmountNumber > userBalance) {
+        console.log("User Balance:", userBalance, "Bet Amount:", betAmount); // Debug log
+
+        if (betAmount > userBalance) {
             showPopup("Insufficient Algo", "Please fund your wallet.");
         } else {
-            console.log("Bet Amount:", betAmountNumber);
-            console.log("Selected Option:", isHeadsSelected ? "Heads" : "Tails");
-
-            startSpin(betAmountNumber, isHeadsSelected ? "Heads" : "Tails");
+            console.log("Bet confirmed:", betAmount, isHeadsSelected ? "Heads" : "Tails");
+            startSpin(betAmount, isHeadsSelected ? "Heads" : "Tails");
         }
     });
 }
