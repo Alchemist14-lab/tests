@@ -167,3 +167,82 @@ function validateAndSpin() {
 
 // Attach event listener to the spin button
 document.querySelector(".spin-button").addEventListener("click", validateAndSpin);
+
+// Function to show a Telegram popup with dynamic title and message
+function showPopup(title, message) {
+    Telegram.WebApp.showPopup({
+        title: title,
+        message: message,
+        buttons: [
+            { id: 'retry', type: 'default', text: 'Try Again' },
+            { type: 'cancel' }
+        ]
+    }, function (buttonId) {
+        if (buttonId === 'retry') {
+            console.log("'Try Again' selected");
+        }
+    });
+}
+
+// Function to fetch wallet balance using Delfly API
+function fetchBalance(walletAddress, callback) {
+    let url = `https://mainnet-idx.algonode.cloud/v2/accounts/${walletAddress}`;
+
+    console.log("Sending request to fetch balance for address:", walletAddress);
+
+    fetch(url)
+        .then(response => {
+            console.log("Response Status:", response.status); // Log response status
+            if (!response.ok) {
+                throw new Error(`API call failed with status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("API Response Data:", data); // Log API response data
+
+            if (data && data.account) {
+                let balance = data.account.amount / 1e6; // Convert from microAlgos to ALGO
+                console.log("Fetched Balance:", balance);
+                callback(balance); // Pass balance to callback function
+            } else {
+                console.error("No 'account' data in API response.");
+                callback(0); // Set balance to 0 if no account found
+            }
+        })
+        .catch(error => {
+            console.error("Balance fetch error:", error);
+            callback(0); // Set balance to 0 in case of an error
+        });
+}
+
+// Function to validate before spinning
+function validateAndSpin() {
+    const betAmount = document.getElementById("bet-amount").value.trim();
+    const betAmountValid = betAmount !== "" && !isNaN(betAmount);
+    const betAmountNumber = parseFloat(betAmount);
+
+    const isHeadsSelected = document.getElementById("heads").classList.contains("active");
+    const isTailsSelected = document.getElementById("tails").classList.contains("active");
+    const betConditionMet = betAmountValid && (isHeadsSelected || isTailsSelected);
+
+    if (!betConditionMet) {
+        showPopup("Error", "Please enter a bet amount and select either Heads or Tails.");
+        return;
+    }
+
+    // Fetch the latest wallet balance before proceeding
+    fetchBalance(walletAddress, function (userBalance) {
+        if (betAmountNumber > userBalance) {
+            showPopup("Insufficient Algo", "Please fund your wallet.");
+        } else {
+            console.log("Bet Amount:", betAmountNumber);
+            console.log("Selected Option:", isHeadsSelected ? "Heads" : "Tails");
+
+            startSpin(betAmountNumber, isHeadsSelected ? "Heads" : "Tails");
+        }
+    });
+}
+
+// Attach event listener to the spin button
+document.querySelector(".spin-button").addEventListener("click", validateAndSpin);
