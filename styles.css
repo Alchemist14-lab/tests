@@ -403,6 +403,6 @@ body {
 }
 
 .blur-effect {
-    filter: blur(8px); /* Apply blur effect */
-    pointer-events: none; /* Disable interactions during spin */
+    filter: blur(5px);
+    transition: filter 0.3s ease-in-out; /* Smooth effect */
 }
