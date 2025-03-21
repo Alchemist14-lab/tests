@@ -215,22 +215,27 @@ function startSpin(betAmount, selectedOption) {
     document.body.classList.add("blurred");
 
     // 2. Set the Lottie animation to spin faster
-    let coinSpin = document.getElementById("coin-lottie"); // Assuming your coin animation is identified as 'coin-lottie'
+    let coinSpin = document.getElementById("coin-animation"); // Assuming your coin animation is identified as 'coin-lottie'
+
+    // Initialize Lottie animation (if not already initialized)
     let lottieInstance = lottie.loadAnimation({
         container: coinSpin,
         renderer: 'svg',
         loop: true,
         autoplay: true,
-        path: 'path/to/coin-spin.json'  // Replace with your Lottie JSON file path
+        path: '/tests/animation.json'  // Replace with your Lottie JSON file path
     });
-    
-    // Increase the speed of the animation (e.g., speed up by a factor of 2)
-    lottieInstance.setSpeed(2);  // Adjust this value as per your need (2x speed)
+
+    // Wait for Lottie animation to load, then set speed
+    lottieInstance.addEventListener('DOMLoaded', function() {
+        // Increase the speed of the animation (e.g., speed up by a factor of 2)
+        lottieInstance.setSpeed(2);  // Adjust this value as per your need (2x speed)
+    });
 
     // 3. Start Haptic Feedback in a repeating pattern during spin
     let hapticInterval = setInterval(() => {
         if (navigator.vibrate) {
-            navigator.vibrate([50, 50, 50]); // Quick vibration feedback
+            Telegram.WebApp.HapticFeedback.impactOccurred('soft'); // Soft haptic feedback during the spin
         }
     }, 100);  // Repeating vibration every 100ms
 
