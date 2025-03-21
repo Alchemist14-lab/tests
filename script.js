@@ -248,5 +248,5 @@ function startSpin(betAmount, selectedOption) {
 
         // Optionally, update the UI to show the result (e.g., with a popup or UI change)
         // This part depends on your game/UI setup
-    }, 3000); // Simulate a 3-second spin time
+    }, 2000); // Simulate a 3-second spin time
 }
