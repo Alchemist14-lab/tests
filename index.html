@@ -188,54 +188,7 @@
             Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
         });
     </script>
-
-<script>
-
-    // Handle the Spin Button with Background Blur, Haptic Feedback, and Hiding UI elements
-    document.querySelector(".spin-button").addEventListener("click", function() {
-        // Apply background blur
-        document.body.style.filter = 'blur(5px)';
-        
-        // Hide UI elements (example: buttons and balance section)
-        document.querySelector(".coin-button").style.display = 'none'; 
-        document.querySelector(".withdraw-button").style.display = 'none';
-        document.querySelector(".balance-container").style.display = 'none';
-
-        // Start the spin animation (if applicable)
-        var animation = lottie.loadAnimation({
-            container: document.getElementById("coin-animation"),
-            renderer: "svg",
-            loop: true,
-            autoplay: true,
-            path: "animation.json"
-        });
-
-        // Fast, continuous haptic feedback during the spin
-        let hapticInterval = setInterval(function() {
-            Telegram.WebApp.HapticFeedback.impactOccurred('light'); // Trigger light haptic feedback
-        }, 100); // Trigger haptic feedback every 100 milliseconds
-
-        // Simulate awaiting result (use setTimeout for demonstration; replace with your actual result fetching logic)
-        setTimeout(function() {
-            // Stop the haptic feedback loop
-            clearInterval(hapticInterval);
-
-            // Revert background blur
-            document.body.style.filter = 'none';
-
-            // Show UI elements again (e.g., buttons, balance section)
-            document.querySelector(".coin-button").style.display = 'block';
-            document.querySelector(".withdraw-button").style.display = 'block';
-            document.querySelector(".balance-container").style.display = 'block';
-
-            // Stop the spin animation
-            animation.stop();
-
-            // Display result popup (replace this with your actual result logic)
-            alert("Spin result: Heads!"); // Example of showing result
-        }, 5000); // Wait for 5 seconds before showing result (replace with actual result delay)
-    });
-</script>
-
+    
+    
 </body>
 </html>
