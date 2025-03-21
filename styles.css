@@ -401,3 +401,8 @@ body {
 .user-id-container {
     display: none;
 }
+
+.blur-effect {
+    filter: blur(8px); /* Apply blur effect */
+    pointer-events: none; /* Disable interactions during spin */
+}
